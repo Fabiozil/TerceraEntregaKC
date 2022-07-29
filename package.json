@@ -1,0 +1,20 @@
+{
+    "name": "terceraentregakc",
+    "version": "1.0.0",
+    "description": "Entrega Curso Javascript Keep Coding",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Fabiozil/TerceraEntregaKC.git"
+    },
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Fabiozil/TerceraEntregaKC/issues"
+    },
+    "homepage": "https://github.com/Fabiozil/TerceraEntregaKC#readme",
+    "type": "module"
+}
