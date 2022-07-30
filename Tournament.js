@@ -2,6 +2,10 @@ import { Group } from "./Group.js";
 export class Tournament {
     constructor(teams) {
         this.groups = this.setGroups(teams);
+        this.quarters = [];
+        this.semis = [];
+        this.final = [];
+        this.thirdPlace = [];
     }
 
     setGroups(teams) {
@@ -41,5 +45,51 @@ export class Tournament {
             group.printTable();
             group.printFixture();
         });
+    }
+
+    groupPhase() {
+        console.log(`===============================================`);
+        console.log(`=============GROUP PHASE STARTING==============`);
+        console.log(`===============================================\n`);
+        this.groups.map((group) => {
+            console.log(
+                `===================Group ${group.groupName}=================== \n`
+            );
+            group.playFixture();
+        });
+        this.setPlayOffs();
+    }
+
+    setPlayOffs() {
+        console.log(`===============================================`);
+        console.log(`=============GROUP PHASE FINISHED==============`);
+        console.log(`===============================================\n`);
+        this.groups.map((group) => {
+            console.log(
+                `===================Group ${group.groupName}=================== \n`
+            );
+            group.printTable();
+        });
+        let legA = [];
+        let legB = [];
+        this.groups.map((group, index) => {
+            if (index < group / 2) {
+                legA.push(group.teams[0]);
+                legB.push(group.teams[1]);
+            } else {
+                legB.push(group.teams[0]);
+                legA.push(group.teams[1]);
+            }
+        });
+
+        legA.map((team, index) => {
+            this.quarters.push([team, legA[legA.length - 1 - index]]);
+        });
+
+        legB.map((team, index) => {
+            this.quarters.push([team, legB[legB.length - 1 - index]]);
+        });
+
+        console.log(this.quarters);
     }
 }

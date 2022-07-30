@@ -39,3 +39,4 @@ let teams = [
 
 let euro2022 = new Tournament(teams);
 euro2022.printGroups();
+euro2022.groupPhase();
