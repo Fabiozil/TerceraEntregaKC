@@ -73,23 +73,125 @@ export class Tournament {
         let legA = [];
         let legB = [];
         this.groups.map((group, index) => {
-            if (index < group / 2) {
-                legA.push(group.teams[0]);
-                legB.push(group.teams[1]);
-            } else {
-                legB.push(group.teams[0]);
-                legA.push(group.teams[1]);
-            }
+            legA.push({
+                team: group.teams[0],
+                position: 1,
+                group: group.groupName,
+            });
+            legB.push({
+                team: group.teams[1],
+                position: 2,
+                group: group.groupName,
+            });
         });
 
         legA.map((team, index) => {
-            this.quarters.push([team, legA[legA.length - 1 - index]]);
-        });
-
-        legB.map((team, index) => {
             this.quarters.push([team, legB[legB.length - 1 - index]]);
         });
+        console.log(`===============================================`);
+        console.log(`============= QUARTER FINALS STARTING ==============`);
+        console.log(`===============================================\n`);
+        this.playQuarters();
+    }
 
-        console.log(this.quarters);
+    playQuarters() {
+        let winners = [];
+        this.quarters.map((quarterMatch, i) => {
+            console.log(
+                `=========== Quarter Final Match ${i + 1} (Winner of Group ${
+                    quarterMatch[0].group
+                } VS Second of Group ${quarterMatch[1].group}) ===========\n`
+            );
+            winners.push(this.finalMatch(quarterMatch[0], quarterMatch[1]));
+        });
+
+        this.semis.push([winners[0], winners[1]]);
+        this.semis.push([winners[2], winners[3]]);
+        this.playSemis();
+    }
+
+    playSemis() {
+        let winners = [];
+        this.semis.map((semisMatch, i) => {
+            console.log(
+                `=========== Semi Finals Match ${i + 1} (${
+                    semisMatch[0].position
+                } of Group ${semisMatch[0].group} VS ${
+                    semisMatch[1].position
+                } of Group ${semisMatch[1].group}) ===========\n`
+            );
+            winners.push(this.finalMatch(semisMatch[0], semisMatch[1]));
+        });
+
+        this.final.push([winners[0], winners[1]]);
+        this.playFinal();
+    }
+
+    playFinal() {
+        console.log(
+            `=========== THE FINAL(${this.final[0][0].position} of Group ${this.final[0][0].group} VS ${this.final[0][1].position} of Group ${this.final[0][1].group}) ===========\n`
+        );
+        const winner = this.finalMatch(this.final[0][0], this.final[0][1]);
+        console.log(
+            `==========================================================`
+        );
+        console.log(
+            `================= THE CHAMPION IS ${winner.team.name} =================`
+        );
+        console.log(
+            `==========================================================`
+        );
+    }
+
+    finalMatch(teamOne, teamTwo) {
+        let teamOneScore = Math.floor(Math.random() * 5);
+        let teamTwoScore = Math.floor(Math.random() * 5);
+        console.log(
+            `${teamOne.team.name} ${teamOneScore} VS ${teamTwoScore} ${teamTwo.team.name}\n`
+        );
+        if (teamOneScore > teamTwoScore) {
+            return teamOne;
+        } else if (teamTwoScore > teamOneScore) {
+            return teamTwo;
+        } else {
+            console.log(`We have a tie, penalty kicks!`);
+            const winner = this.penaltyKicks();
+            if (winner === 1) {
+                console.log(`${teamOne.team.name} Wins!\n`);
+                return teamOne;
+            } else {
+                console.log(`${teamTwo.team.name} Wins!\n`);
+                return teamTwo;
+            }
+        }
+    }
+
+    penaltyKicks() {
+        let teamOneScore = Math.floor(Math.random() * 5);
+        let teamTwoScore = Math.floor(Math.random() * 5);
+        if (teamOneScore > teamTwoScore) {
+            console.log(
+                `Penalty Results: ${teamOneScore} VS ${teamTwoScore}\n`
+            );
+            return 1;
+        } else if (teamTwoScore > teamOneScore) {
+            console.log(
+                `Penalty Results: ${teamOneScore} VS ${teamTwoScore}\n`
+            );
+            return 2;
+        } else {
+            while (teamOneScore === teamTwoScore) {
+                teamOneScore += Math.floor(Math.random() * 2);
+                teamTwoScore += Math.floor(Math.random() * 2);
+            }
+            console.log(
+                `Penalty Results: ${teamOneScore} VS ${teamTwoScore}\n`
+            );
+            if (teamOneScore > teamTwoScore) {
+                return 1;
+            } else {
+                return 2;
+            }
+        }
     }
 }
